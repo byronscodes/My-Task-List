@@ -16,6 +16,7 @@ componentDidMount(){
   this.refreshNotes();
 }
 
+// function to refresh the page after adding or deleting a task
 async refreshNotes(){
   fetch(this.API_URL + "api/todoapp/GetNotes").then(response=>response.json())
   .then(data=>{
@@ -23,6 +24,8 @@ async refreshNotes(){
   })
 }
 
+// function to add tasks
+// it creates a task that the user defines and assigns it an id
 async addClick(){
   var newNotes = document.getElementById("newNotes").value;
   const data = new FormData();
@@ -38,6 +41,8 @@ async addClick(){
   })
 }
 
+// function to delete task
+// it calls the id of the task to delete it and refresh the page
 async deleteClick(id){
   fetch(this.API_URL + "api/todoapp/DeleteNotes?id=" + id, {
     method: "DELETE",
@@ -51,25 +56,40 @@ async deleteClick(id){
 // custom components
 // import CustomForm from './components/CustomForm'
 
+// rendering of website, HTML to create header and buttons
 render() {
   const{notes} = this.state;
   return (
+    <form>
     <div className="container">
-      <header>
+    <header>
         <h1>My Task List</h1>
       </header>
-      <input id="newNotes"/>&nbsp;
-      <button onClick={()=>this.addClick()}>+</button>
+    </div>
+    <div className="wrapper">
+      <input 
+        type="text"
+        className="input"
+        id="newNotes"
+        required
+        autoFocus
+        maxLength={60}
+        placeholder="Enter Task"/>&nbsp;
+      <button 
+      className="btn"
+      onClick={()=>this.addClick()}>+</button>
       {notes.map(note=>
       <p>
-        <b>* {note.description}</b>&nbsp;
-        <button onClick={()=>this.deleteClick(note.id)}>✓</button>
+        <b className="list">• {note.description}</b>&nbsp;
+        <button 
+        className="btn"
+        onClick={()=>this.deleteClick(note.id)}>✓</button>
       </p>
       )}
     </div>
+    </form>
   );
 }
 }
-
 
 export default App;
